@@ -33,18 +33,47 @@
 
     <div class="container">
         <?php 
-        $url = $_SERVER["REQUEST_URI"];
+        /*$url = $_SERVER["REQUEST_URI"];
 
         //echo "Вы на странице: $url, будьте внимательны!<br>";
 
         if ($url == "/") {
-            require "../views/main.php";
+            require "../views/main.html";
         } elseif (preg_match("#^/wheatley#", $url)) {
             require "../views/wheatley.php";
         } elseif (preg_match("#^/GLaDOS#", $url)) {
             require "../views/GLaDOS.php";
-        } 
+        } */
         ?>
     </div> 
 </body>
 </html>
+
+<?php
+
+// подключаем пакеты которые установили через composer
+require_once '../vendor/autoload.php';
+
+// создаем загрузчик шаблонов, и указываем папку с шаблонами
+// \Twig\Loader\FilesystemLoader -- это типа как в C# писать Twig.Loader.FilesystemLoader, 
+// только слеш вместо точек
+$loader = new \Twig\Loader\FilesystemLoader('../views');
+
+// создаем собственно экземпляр Twig с помощью которого будет рендерить
+$twig = new \Twig\Environment($loader);
+
+$url = $_SERVER["REQUEST_URI"];
+
+if ($url == "/") {
+    // это убираем require "../views/main.html";
+    
+    echo $twig->render("main.html");
+} elseif (preg_match("#/GLaDOS#", $url)) {
+    // и это тоже require "../views/mermaid.html";
+    
+    echo $twig->render("GLaDOS.php");
+} elseif (preg_match("#/wheatley#", $url)) {
+    // и вот это require "../views/uranus.html";
+    
+    echo $twig->render("wheatley.php");
+}
