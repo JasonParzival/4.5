@@ -33,6 +33,58 @@
 
     <div class="container">
         <?php 
+
+        require_once '../vendor/autoload.php';
+
+        $loader = new \Twig\Loader\FilesystemLoader('../views');
+
+        $twig = new \Twig\Environment($loader);
+
+        $url = $_SERVER["REQUEST_URI"];
+
+        /*if ($url == "/") {
+            // это убираем require "../views/main.html";
+            
+            echo $twig->render("main.twig", [
+                "title" => "Главная"
+            ]);
+        } elseif (preg_match("#/GLaDOS#", $url)) {
+            // и это тоже require "../views/mermaid.html";
+            
+            echo $twig->render("GLaDOS.php", [
+                "title" => "ГЛэДОС"
+            ]);
+        } elseif (preg_match("#/wheatley#", $url)) {
+            // и вот это require "../views/uranus.html";
+            
+            echo $twig->render("wheatley.php", [
+                "title" => "Уитли"
+            ]);
+        }*/
+
+        $title = "";
+        $template = "";
+        $context = [];
+
+        // тут теперь просто заполняю значение переменных
+        if ($url == "/") {
+            $title = "Главная";
+            $template = "main.twig";
+        } elseif (preg_match("#/GLaDOS#", $url)) {
+            $title = "ГЛэДОС";
+            $template = "GLaDOS.php";
+            $context['image'] = "/images/GLaDOS.gif";
+        } elseif (preg_match("#/wheatley#", $url)) {
+            $title = "Уитли";
+            $template = "wheatley.php";
+            $context['image'] = "/images/wheatley.jpg";
+        }
+
+        $context['title'] = $title;
+
+        // ну и рендерю
+        echo $twig->render($template, $context);
+
         /*$url = $_SERVER["REQUEST_URI"];
 
         //echo "Вы на странице: $url, будьте внимательны!<br>";
@@ -48,32 +100,3 @@
     </div> 
 </body>
 </html>
-
-<?php
-
-// подключаем пакеты которые установили через composer
-require_once '../vendor/autoload.php';
-
-// создаем загрузчик шаблонов, и указываем папку с шаблонами
-// \Twig\Loader\FilesystemLoader -- это типа как в C# писать Twig.Loader.FilesystemLoader, 
-// только слеш вместо точек
-$loader = new \Twig\Loader\FilesystemLoader('../views');
-
-// создаем собственно экземпляр Twig с помощью которого будет рендерить
-$twig = new \Twig\Environment($loader);
-
-$url = $_SERVER["REQUEST_URI"];
-
-if ($url == "/") {
-    // это убираем require "../views/main.html";
-    
-    echo $twig->render("main.html");
-} elseif (preg_match("#/GLaDOS#", $url)) {
-    // и это тоже require "../views/mermaid.html";
-    
-    echo $twig->render("GLaDOS.php");
-} elseif (preg_match("#/wheatley#", $url)) {
-    // и вот это require "../views/uranus.html";
-    
-    echo $twig->render("wheatley.php");
-}
