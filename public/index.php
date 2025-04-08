@@ -9,31 +9,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"  rel="stylesheet" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-meteor"></i></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Главная</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/wheatley">Уитли</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/GLaDOS">ГЛэДОС</a>
-                </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <div class="container">
         <?php 
-
         require_once '../vendor/autoload.php';
 
         $loader = new \Twig\Loader\FilesystemLoader('../views');
@@ -41,26 +18,6 @@
         $twig = new \Twig\Environment($loader);
 
         $url = $_SERVER["REQUEST_URI"];
-
-        /*if ($url == "/") {
-            // это убираем require "../views/main.html";
-            
-            echo $twig->render("main.twig", [
-                "title" => "Главная"
-            ]);
-        } elseif (preg_match("#/GLaDOS#", $url)) {
-            // и это тоже require "../views/mermaid.html";
-            
-            echo $twig->render("GLaDOS.php", [
-                "title" => "ГЛэДОС"
-            ]);
-        } elseif (preg_match("#/wheatley#", $url)) {
-            // и вот это require "../views/uranus.html";
-            
-            echo $twig->render("wheatley.php", [
-                "title" => "Уитли"
-            ]);
-        }*/
 
         $title = "";
         $template = "";
@@ -70,32 +27,32 @@
         if ($url == "/") {
             $title = "Главная";
             $template = "main.twig";
-        } elseif (preg_match("#/GLaDOS#", $url)) {
+        } elseif (preg_match("#^/GLaDOS/image#", $url)) {
             $title = "ГЛэДОС";
-            $template = "GLaDOS.php";
+            $template = "base_image.twig";
             $context['image'] = "/images/GLaDOS.gif";
+        } elseif (preg_match("#^/GLaDOS/info#", $url)) {
+            $title = "ГЛэДОС";
+            $template = "GLaDOS_info.twig";
+        } elseif (preg_match("#^/GLaDOS#", $url)) {
+            $title = "ГЛэДОС";
+            $template = "GLaDOS.twig";
+        } elseif (preg_match("#/wheatley/image#", $url)) {
+            $title = "Уитли";
+            $template = "base_image.twig";
+            $context['image'] = "../images/wheatley.jpg";
+        } elseif (preg_match("#/wheatley/info#", $url)) {
+            $title = "Уитли";
+            $template = "wheatley_info.twig";
         } elseif (preg_match("#/wheatley#", $url)) {
             $title = "Уитли";
-            $template = "wheatley.php";
-            $context['image'] = "/images/wheatley.jpg";
+            $template = "wheatley.twig";
         }
 
         $context['title'] = $title;
 
         // ну и рендерю
         echo $twig->render($template, $context);
-
-        /*$url = $_SERVER["REQUEST_URI"];
-
-        //echo "Вы на странице: $url, будьте внимательны!<br>";
-
-        if ($url == "/") {
-            require "../views/main.html";
-        } elseif (preg_match("#^/wheatley#", $url)) {
-            require "../views/wheatley.php";
-        } elseif (preg_match("#^/GLaDOS#", $url)) {
-            require "../views/GLaDOS.php";
-        } */
         ?>
     </div> 
 </body>
