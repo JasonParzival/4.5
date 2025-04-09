@@ -29,7 +29,7 @@
             $template = "main.twig";
         } elseif (preg_match("#^/GLaDOS/image#", $url)) {
             $title = "ГЛэДОС";
-            $template = "base_image.twig";
+            $template = "base_image2.twig";
             $context['image'] = "/images/GLaDOS.gif";
         } elseif (preg_match("#^/GLaDOS/info#", $url)) {
             $title = "ГЛэДОС";
@@ -39,7 +39,7 @@
             $template = "GLaDOS.twig";
         } elseif (preg_match("#/wheatley/image#", $url)) {
             $title = "Уитли";
-            $template = "base_image.twig";
+            $template = "base_image1.twig";
             $context['image'] = "../images/wheatley.jpg";
         } elseif (preg_match("#/wheatley/info#", $url)) {
             $title = "Уитли";
